@@ -12,7 +12,9 @@ export const categories = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     name: varchar("name", { length: 50 }).notNull().unique(),
     slug: varchar("slug", { length: 120 }).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
+      .notNull()
+      .defaultNow(),
     updatedAt: timestamp("updated_at", {
       withTimezone: true,
       mode: "date",

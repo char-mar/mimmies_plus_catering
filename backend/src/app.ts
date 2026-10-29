@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import categoryRoute from "./routes/category.route";
 
 export const app = express();
 app.use(cors());
@@ -11,3 +12,5 @@ app.get("/health", (_req, res) => {
     message: "App is in good health",
   });
 });
+
+app.use("/api/v1/categories", categoryRoute);

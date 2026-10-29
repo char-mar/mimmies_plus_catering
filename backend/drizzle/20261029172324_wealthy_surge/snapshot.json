@@ -1,0 +1,67 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "c02df475-1caa-4dca-b603-60d91bf37525",
+  "prevIds": [
+    "e06d2326-ce5b-4cae-9c20-b100a8e94873"
+  ],
+  "footprints": [
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "categories",
+        "created_at"
+      ],
+      "writes": [
+        "s|colprop|public.categories.created_at.notNull",
+        "s|colprop|public.categories.created_at.default"
+      ],
+      "reads": [
+        "n|tbl|public.categories",
+        "n|sch|public",
+        "n|col|public.categories.created_at"
+      ],
+      "sqlHash": "13350b8212e3762c"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "menu",
+        "created_at"
+      ],
+      "writes": [
+        "s|colprop|public.menu.created_at.notNull",
+        "s|colprop|public.menu.created_at.default"
+      ],
+      "reads": [
+        "n|tbl|public.menu",
+        "n|sch|public",
+        "n|col|public.menu.created_at"
+      ],
+      "sqlHash": "36583d154c203939"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"categories\",\"created_at\"]",
+      "set": {
+        "notNull": true,
+        "default": "now()"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"menu\",\"created_at\"]",
+      "set": {
+        "notNull": true,
+        "default": "now()"
+      }
+    }
+  ]
+}

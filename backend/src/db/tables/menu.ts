@@ -10,7 +10,9 @@ export const menu = pgTable("menu", {
   name: text("name").notNull(),
   description: text("description"),
   image: text("image"),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
+    .notNull()
+    .defaultNow(),
 });
 
 export const menuVariants = pgTable("menu_variants", {
