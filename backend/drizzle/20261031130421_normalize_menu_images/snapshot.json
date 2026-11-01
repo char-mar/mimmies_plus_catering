@@ -1,0 +1,57 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "1a321002-d30e-43b5-b118-5a54b52ff80e",
+  "prevIds": [
+    "e7db14d8-29bb-4856-af01-825036755bb5"
+  ],
+  "footprints": [
+    {
+      "statementType": "drop_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "menu",
+        "image"
+      ],
+      "writes": [
+        "s|col|public.menu.image",
+        "n|col|public.menu.image",
+        "e|col|public.menu.image"
+      ],
+      "reads": [
+        "n|tbl|public.menu",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "drop_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "menu_variants",
+        "image"
+      ],
+      "writes": [
+        "s|col|public.menu_variants.image",
+        "n|col|public.menu_variants.image",
+        "e|col|public.menu_variants.image"
+      ],
+      "reads": [
+        "n|tbl|public.menu_variants",
+        "n|sch|public"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"menu\",\"image\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"menu_variants\",\"image\"]"
+    }
+  ]
+}

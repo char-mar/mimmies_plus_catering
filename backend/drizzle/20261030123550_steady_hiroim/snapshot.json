@@ -1,0 +1,44 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "01449e53-0ebc-4b46-aebd-923a5ca7993d",
+  "prevIds": [
+    "c02df475-1caa-4dca-b603-60d91bf37525"
+  ],
+  "footprints": [
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "menu"
+      ],
+      "writes": [
+        "s|fk|public.menu.menu_category_id_categories_id_fkey",
+        "n|fk|public.menu.menu_category_id_categories_id_fkey",
+        "e|fk|public.menu.menu_category_id_categories_id_fkey",
+        "n|con|public.menu.menu_category_id_categories_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.menu",
+        "n|sch|public",
+        "n|tbl|public.categories",
+        "n|sch|public",
+        "n|col|public.menu.category_id",
+        "n|col|public.categories.id",
+        "e|uniqueness|public.categories.id"
+      ],
+      "sqlHash": "c1eeb79cc9f867a2"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"menu\",\"menu_category_id_categories_id_fkey\"]",
+      "set": {
+        "onDelete": "CASCADE"
+      }
+    }
+  ]
+}

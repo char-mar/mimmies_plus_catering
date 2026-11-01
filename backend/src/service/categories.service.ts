@@ -4,7 +4,7 @@ import { db } from "../config/db";
 import { categories } from "../db/schema";
 import type { CreateCategoryDto, UpdateCategoryDto } from "../dto/category.dto";
 import { ConflictError, NotFoundError } from "../errors/app-error";
-import { slugify } from "../utils/slug";
+import { slugify } from "../common/utils/slug";
 
 type Category = typeof categories.$inferSelect;
 

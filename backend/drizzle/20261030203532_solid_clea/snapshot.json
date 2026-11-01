@@ -1,0 +1,294 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "e7db14d8-29bb-4856-af01-825036755bb5",
+  "prevIds": [
+    "01449e53-0ebc-4b46-aebd-923a5ca7993d"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "menu_images"
+      ],
+      "writes": [
+        "s|tbl|public.menu_images",
+        "n|tbl|public.menu_images",
+        "e|tbl|public.menu_images",
+        "n|rel|public.menu_images",
+        "n|type|public.menu_images",
+        "n|rel|public.menu_images_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "menu_images"
+      ],
+      "writes": [
+        "s|fk|public.menu_images.menu_images_menu_id_menu_id_fkey",
+        "n|fk|public.menu_images.menu_images_menu_id_menu_id_fkey",
+        "e|fk|public.menu_images.menu_images_menu_id_menu_id_fkey",
+        "n|con|public.menu_images.menu_images_menu_id_menu_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.menu_images",
+        "n|sch|public",
+        "n|tbl|public.menu",
+        "n|sch|public",
+        "n|col|public.menu_images.menu_id",
+        "n|col|public.menu.id",
+        "e|uniqueness|public.menu.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "menu_images"
+      ],
+      "writes": [
+        "s|fk|public.menu_images.menu_images_variant_id_menu_variants_id_fkey",
+        "n|fk|public.menu_images.menu_images_variant_id_menu_variants_id_fkey",
+        "e|fk|public.menu_images.menu_images_variant_id_menu_variants_id_fkey",
+        "n|con|public.menu_images.menu_images_variant_id_menu_variants_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.menu_images",
+        "n|sch|public",
+        "n|tbl|public.menu_variants",
+        "n|sch|public",
+        "n|col|public.menu_images.variant_id",
+        "n|col|public.menu_variants.id",
+        "e|uniqueness|public.menu_variants.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "menu_images",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "menu_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "variant_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "url",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "public_id",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "alt_text",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "is_primary",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "sort_order",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "0",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "menu_images_menu_id_menu_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "menu_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "menu",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "menu_images_variant_id_menu_variants_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "variant_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "menu_variants",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "menu_images_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "menu_images",
+        "name": "menu_images_owner_check",
+        "value": "(\n        (\"menu_id\" IS NOT NULL AND \"variant_id\" IS NULL)\n        OR\n        (\"menu_id\" IS NULL AND \"variant_id\" IS NOT NULL)\n      )",
+        "entityType": "checks"
+      }
+    }
+  ]
+}

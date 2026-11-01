@@ -5,11 +5,10 @@ import { categories } from "./categories";
 export const menu = pgTable("menu", {
   id: uuid("id").defaultRandom().primaryKey(),
   categoryId: uuid("category_id")
-    .references(() => categories.id, { onDelete: "restrict" })
+    .references(() => categories.id, { onDelete: "cascade" })
     .notNull(),
   name: text("name").notNull(),
   description: text("description"),
-  image: text("image"),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
     .notNull()
     .defaultNow(),
@@ -22,7 +21,6 @@ export const menuVariants = pgTable("menu_variants", {
     .references(() => menu.id, { onDelete: "cascade" }),
   size: text("size"),
   price: numeric("price", { precision: 10, scale: 2 }).notNull(),
-  image: text("image"),
 });
 
 export const menuItemsRelations = relations(menu, ({ many }) => ({
