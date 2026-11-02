@@ -99,7 +99,7 @@ export function VerifyEmailPage() {
             Your address is confirmed. Your account is now fully secured.
           </p>
         </div>
-        <LinkButton to={authenticated ? "/" : "/login"} fullWidth>
+        <LinkButton to={authenticated ? "/dashboard" : "/login"} fullWidth>
           {authenticated ? "Go to dashboard" : "Continue to sign in"}
         </LinkButton>
       </FadeIn>

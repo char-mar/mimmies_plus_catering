@@ -31,6 +31,25 @@ export function formatDateTime(value: string | Date | null | undefined): string 
   }).format(date);
 }
 
+const priceFormatter = new Intl.NumberFormat("en-GH", {
+  style: "currency",
+  currency: "GHS",
+});
+
+export function formatPrice(value: string | number | null | undefined): string {
+  if (value === null || value === undefined || value === "") {
+    return "—";
+  }
+
+  const amount = typeof value === "string" ? Number(value) : value;
+
+  if (!Number.isFinite(amount)) {
+    return "—";
+  }
+
+  return priceFormatter.format(amount);
+}
+
 export function initials(name: string): string {
   return name
     .trim()

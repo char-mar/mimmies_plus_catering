@@ -9,3 +9,14 @@ export const userKeys = {
   list: (page: number, limit: number) =>
     [...userKeys.lists(), { page, limit }] as const,
 };
+
+export const categoryKeys = {
+  all: ["categories"] as const,
+  list: () => [...categoryKeys.all, "list"] as const,
+};
+
+export const menuKeys = {
+  all: ["menu"] as const,
+  list: () => [...menuKeys.all, "list"] as const,
+  detail: (id: string) => [...menuKeys.all, "detail", id] as const,
+};

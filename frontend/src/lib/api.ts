@@ -183,6 +183,10 @@ function handleUnauthorized(): void {
   }
 }
 
+function isFormData(value: unknown): value is FormData {
+  return typeof FormData !== "undefined" && value instanceof FormData;
+}
+
 async function executeRequest(
   url: string,
   options: RequestOptions,
@@ -190,15 +194,26 @@ async function executeRequest(
 ): Promise<Response> {
   const token = auth ? useAuthStore.getState().accessToken : null;
   const headers = new Headers(options.headers);
+  const multipart = isFormData(options.body);
 
   headers.set("Accept", "application/json");
 
-  if (options.body !== undefined) {
+  // Never set Content-Type for FormData: the browser must add the multipart
+  // boundary itself.
+  if (options.body !== undefined && !multipart) {
     headers.set("Content-Type", "application/json");
   }
 
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  let body: BodyInit | undefined;
+
+  if (options.body !== undefined) {
+    body = isFormData(options.body)
+      ? options.body
+      : JSON.stringify(options.body);
   }
 
   try {
@@ -207,9 +222,7 @@ async function executeRequest(
       credentials: "include",
       headers,
       signal: options.signal,
-      ...(options.body !== undefined
-        ? { body: JSON.stringify(options.body) }
-        : {}),
+      ...(body !== undefined ? { body } : {}),
     });
   } catch {
     throw new ApiError(

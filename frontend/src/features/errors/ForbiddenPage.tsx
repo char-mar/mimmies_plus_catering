@@ -28,8 +28,8 @@ export function ForbiddenPage() {
         this is a mistake, ask a super admin to review your role.
       </p>
       <div className="mt-6">
-        <LinkButton to={authenticated ? "/" : "/login"}>
-          Back to {authenticated ? "dashboard" : "sign in"}
+        <LinkButton to={authenticated ? "/dashboard" : "/"}>
+          Back to {authenticated ? "dashboard" : "menu"}
         </LinkButton>
       </div>
     </FadeIn>

@@ -28,7 +28,7 @@ export function NotFoundPage() {
         incomplete.
       </p>
       <div className="mt-6">
-        <LinkButton to="/">Back to dashboard</LinkButton>
+        <LinkButton to="/">Back to menu</LinkButton>
       </div>
     </FadeIn>
   );

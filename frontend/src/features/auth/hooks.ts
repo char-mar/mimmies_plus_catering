@@ -18,7 +18,7 @@ function useRedirectTarget(): string {
   const location = useLocation();
   const state = location.state as RedirectState | null;
 
-  return state?.from ?? "/";
+  return state?.from ?? "/dashboard";
 }
 
 export function useLogin() {

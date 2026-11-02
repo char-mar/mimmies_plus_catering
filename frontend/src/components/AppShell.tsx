@@ -3,13 +3,16 @@ import type { ComponentType, SVGProps } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
+  ChefHat,
   LayoutDashboard,
   LogOut,
   Mail,
   Menu,
   ShieldCheck,
+  Tags,
   UserRound,
   Users,
+  UtensilsCrossed,
   X,
 } from "lucide-react";
 
@@ -40,7 +43,13 @@ function buildNavigation(role: "SUPER_ADMIN" | "ADMIN" | "CUSTOMER"): NavSection
     {
       label: "Workspace",
       items: [
-        { label: "Dashboard", to: "/", icon: LayoutDashboard, end: true },
+        {
+          label: "Browse menu",
+          to: "/",
+          icon: UtensilsCrossed,
+          end: true,
+        },
+        { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
         { label: "Profile", to: "/profile", icon: UserRound },
       ],
     },
@@ -49,7 +58,11 @@ function buildNavigation(role: "SUPER_ADMIN" | "ADMIN" | "CUSTOMER"): NavSection
   if (hasRequiredRole(role, ["ADMIN"])) {
     sections.push({
       label: "Administration",
-      items: [{ label: "Users", to: "/admin/users", icon: Users }],
+      items: [
+        { label: "Menu", to: "/admin/menu", icon: ChefHat },
+        { label: "Categories", to: "/admin/categories", icon: Tags },
+        { label: "Users", to: "/admin/users", icon: Users },
+      ],
     });
   }
 

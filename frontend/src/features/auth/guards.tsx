@@ -56,7 +56,7 @@ export function PublicOnlyRoute({ children }: { children: ReactNode }) {
   const status = useAuthStore((state) => state.status);
 
   if (status === "authenticated") {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;
