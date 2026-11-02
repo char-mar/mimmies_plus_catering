@@ -7,6 +7,7 @@ import type { UserResponseDto } from "../dto/user.dto";
 import { ConflictError, NotFoundError } from "../errors/app-error";
 import { buildPagination, getPagination } from "../common/utils/pagination";
 import type { PaginatedResponse } from "../common/types/pagination.types";
+import { isUniqueViolation } from "../common/utils/db-errors";
 
 type UserRecord = typeof users.$inferSelect;
 
@@ -15,15 +16,6 @@ interface CreateUserInput {
   email: string;
   passwordHash: string;
   role?: UserRole;
-}
-
-function isUniqueViolation(error: unknown): boolean {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    error.code === "23505"
-  );
 }
 
 export class UserService {

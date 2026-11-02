@@ -45,3 +45,15 @@ export class TooManyRequestsError extends AppError {
     super(message, 429);
   }
 }
+
+export class BadGatewayError extends AppError {
+  constructor(message = "The upstream service returned an invalid response.") {
+    super(message, 502);
+  }
+}
+
+export class ServiceUnavailableError extends AppError {
+  constructor(message = "The service is temporarily unavailable.") {
+    super(message, 503);
+  }
+}

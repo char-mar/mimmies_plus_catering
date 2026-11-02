@@ -49,6 +49,29 @@ const envSchema = z.object({
   AUTH_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
   PASSWORD_RESET_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(5),
   REFRESH_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120),
+
+  CURRENCY: z
+    .string()
+    .trim()
+    .length(3)
+    .transform((value) => value.toUpperCase())
+    .default("GHS"),
+  DELIVERY_FEE: z
+    .string()
+    .trim()
+    .regex(
+      /^\d{1,8}(\.\d{1,2})?$/,
+      "DELIVERY_FEE must be a positive amount with up to two decimals.",
+    )
+    .default("0.00"),
+
+  PAYSTACK_SECRET_KEY: z.preprocess(
+    (value) =>
+      typeof value === "string" && value.trim() === "" ? undefined : value,
+    z.string().min(1).optional(),
+  ),
+  PAYSTACK_BASE_URL: z.url().default("https://api.paystack.co"),
+  PAYSTACK_CALLBACK_URL: z.url().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

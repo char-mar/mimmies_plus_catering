@@ -55,12 +55,60 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.id,
       to: r.refreshTokens.userId,
     }),
+
+    orders: r.many.orders({
+      from: r.users.id,
+      to: r.orders.userId,
+    }),
   },
 
   refreshTokens: {
     user: r.one.users({
       from: r.refreshTokens.userId,
       to: r.users.id,
+    }),
+  },
+
+  orders: {
+    user: r.one.users({
+      from: r.orders.userId,
+      to: r.users.id,
+    }),
+
+    items: r.many.orderItems({
+      from: r.orders.id,
+      to: r.orderItems.orderId,
+    }),
+
+    statusHistory: r.many.orderStatusHistory({
+      from: r.orders.id,
+      to: r.orderStatusHistory.orderId,
+    }),
+
+    payments: r.many.payments({
+      from: r.orders.id,
+      to: r.payments.orderId,
+    }),
+  },
+
+  orderItems: {
+    order: r.one.orders({
+      from: r.orderItems.orderId,
+      to: r.orders.id,
+    }),
+  },
+
+  orderStatusHistory: {
+    order: r.one.orders({
+      from: r.orderStatusHistory.orderId,
+      to: r.orders.id,
+    }),
+  },
+
+  payments: {
+    order: r.one.orders({
+      from: r.payments.orderId,
+      to: r.orders.id,
     }),
   },
 }));
