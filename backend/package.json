@@ -4,13 +4,15 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test RATE_LIMIT_ENABLED=false tsx --test src/tests/*.test.ts",
     "start": "tsx ./src/server.ts",
     "dev": "tsx --watch ./src/server.ts",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "create:super-admin": "tsx ./src/scripts/create-super-admin.ts",
+    "mail:test": "tsx ./src/scripts/send-test-email.ts"
   },
   "keywords": [],
   "type": "module",
@@ -21,8 +23,10 @@
     "dotenv": "^18.0.9",
     "drizzle-orm": "^1.0.0-rc.5",
     "express": "^5.3.0",
+    "express-rate-limit": "^8.7.2",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.5.0",
+    "nodemailer": "^10.3.1",
     "pg": "^8.23.1",
     "zod": "^4.6.7"
   },
@@ -35,6 +39,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.3.0",
     "@types/node": "^26.6.5",
+    "@types/nodemailer": "^8.0.2",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^1.0.0-rc.5",
     "ts-node": "^10.9.2",

@@ -1,0 +1,81 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "feee7e92-75a2-47a4-bc89-dfc48a85ffaf",
+  "prevIds": [
+    "5b5ba553-cbe2-4430-8332-d1c777f5b9ab"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_unique",
+      "statementTarget": [
+        "table",
+        "public",
+        "users"
+      ],
+      "writes": [
+        "s|uq|public.users.users_email_verification_token_key",
+        "n|uq|public.users.users_email_verification_token_key",
+        "e|uq|public.users.users_email_verification_token_key",
+        "n|con|public.users.users_email_verification_token_key",
+        "n|rel|public.users_email_verification_token_key"
+      ],
+      "reads": [
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.users.email_verification_token"
+      ]
+    },
+    {
+      "statementType": "add_unique",
+      "statementTarget": [
+        "table",
+        "public",
+        "users"
+      ],
+      "writes": [
+        "s|uq|public.users.users_password_reset_token_key",
+        "n|uq|public.users.users_password_reset_token_key",
+        "e|uq|public.users.users_password_reset_token_key",
+        "n|con|public.users.users_password_reset_token_key",
+        "n|rel|public.users_password_reset_token_key"
+      ],
+      "reads": [
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.users.password_reset_token"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "users",
+        "name": "users_email_verification_token_key",
+        "nameExplicit": false,
+        "columns": [
+          "email_verification_token"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "users",
+        "name": "users_password_reset_token_key",
+        "nameExplicit": false,
+        "columns": [
+          "password_reset_token"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    }
+  ]
+}

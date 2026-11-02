@@ -1,0 +1,2 @@
+ALTER TABLE "users" ADD CONSTRAINT "users_email_verification_token_key" UNIQUE("email_verification_token");--> statement-breakpoint
+ALTER TABLE "users" ADD CONSTRAINT "users_password_reset_token_key" UNIQUE("password_reset_token");

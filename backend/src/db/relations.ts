@@ -49,4 +49,18 @@ export const relations = defineRelations(schema, (r) => ({
       to: r.menuVariants.id,
     }),
   },
+
+  users: {
+    refreshTokens: r.many.refreshTokens({
+      from: r.users.id,
+      to: r.refreshTokens.userId,
+    }),
+  },
+
+  refreshTokens: {
+    user: r.one.users({
+      from: r.refreshTokens.userId,
+      to: r.users.id,
+    }),
+  },
 }));
