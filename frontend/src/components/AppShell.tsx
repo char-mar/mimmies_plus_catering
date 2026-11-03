@@ -8,6 +8,7 @@ import {
   LogOut,
   Mail,
   Menu,
+  ReceiptText,
   ShieldCheck,
   Tags,
   UserRound,
@@ -18,6 +19,7 @@ import {
 
 import { useMe, useLogout, useResendVerification } from "@/features/auth/hooks";
 import { useAuthStore } from "@/features/auth/store";
+import { CartButton, CartDrawer } from "@/features/cart/CartDrawer";
 import { cn } from "@/lib/cn";
 import { EASE_OUT, springDrawer, springSnappy } from "@/lib/motion";
 import { hasRequiredRole, ROLE_LABELS, ROLE_TONES } from "@/lib/roles";
@@ -50,6 +52,7 @@ function buildNavigation(role: "SUPER_ADMIN" | "ADMIN" | "CUSTOMER"): NavSection
           end: true,
         },
         { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
+        { label: "Orders", to: "/orders", icon: ReceiptText },
         { label: "Profile", to: "/profile", icon: UserRound },
       ],
     },
@@ -256,7 +259,10 @@ export function AppShell() {
             <Menu className="size-5" aria-hidden="true" />
           </button>
           <Logo compact />
-          <Avatar name={user.name} />
+          <div className="flex items-center gap-2">
+            <CartButton />
+            <Avatar name={user.name} />
+          </div>
         </header>
 
         <header className="sticky top-0 z-20 hidden h-16 items-center justify-between gap-4 border-b border-stone-200 bg-white/80 px-8 backdrop-blur lg:flex">
@@ -265,6 +271,7 @@ export function AppShell() {
             <span className="font-semibold text-stone-800">{user.email}</span>
           </p>
           <div className="flex shrink-0 items-center gap-2">
+            <CartButton />
             <Badge tone={ROLE_TONES[user.role]}>
               <ShieldCheck className="size-3.5" aria-hidden="true" />
               {ROLE_LABELS[user.role]}
@@ -325,6 +332,8 @@ export function AppShell() {
           </div>
         </main>
       </div>
+
+      <CartDrawer />
     </div>
   );
 }

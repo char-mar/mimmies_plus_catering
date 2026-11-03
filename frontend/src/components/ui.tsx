@@ -1,6 +1,7 @@
 import { useId, useState } from "react";
 import type {
   InputHTMLAttributes,
+  MouseEventHandler,
   ReactNode,
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
@@ -105,6 +106,7 @@ interface LinkButtonProps {
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   className?: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
   children: ReactNode;
 }
 
@@ -116,11 +118,13 @@ export function LinkButton({
   leftIcon,
   rightIcon,
   className,
+  onClick,
   children,
 }: LinkButtonProps) {
   return (
     <MotionLink
       to={to}
+      onClick={onClick}
       whileHover={{ y: -1 }}
       whileTap={{ scale: 0.97 }}
       transition={springSnappy}
@@ -429,7 +433,7 @@ export function Alert({
   );
 }
 
-type BadgeTone = "brand" | "green" | "red" | "stone" | "blue" | "amber";
+export type BadgeTone = "brand" | "green" | "red" | "stone" | "blue" | "amber";
 
 const badgeStyles: Record<BadgeTone, string> = {
   brand: "bg-brand-50 text-brand-700 ring-brand-200",

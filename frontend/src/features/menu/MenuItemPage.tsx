@@ -1,12 +1,16 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "motion/react";
+import toast from "react-hot-toast";
 import {
   ArrowLeft,
   Camera,
   ChefHat,
   ImageOff,
+  Minus,
+  Plus,
   RefreshCw,
+  ShoppingBag,
   UtensilsCrossed,
 } from "lucide-react";
 
@@ -18,6 +22,7 @@ import {
   EmptyState,
   LinkButton,
 } from "@/components/ui";
+import { MAX_ITEM_QUANTITY, useCartStore } from "@/features/cart/store";
 import { ApiError } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { getErrorMessage } from "@/lib/errors";
@@ -122,6 +127,12 @@ export function MenuItemPage() {
 function DishDetails({ item }: { item: MenuItem }) {
   const images = useMemo(() => galleryImages(item), [item]);
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
+    null,
+  );
+  const [quantity, setQuantity] = useState(1);
+  const addItem = useCartStore((state) => state.addItem);
+  const openCart = useCartStore((state) => state.openCart);
 
   const selectedImage =
     images.find((image) => image.id === selectedImageId) ?? images[0] ?? null;
@@ -134,9 +145,50 @@ function DishDetails({ item }: { item: MenuItem }) {
     [item.variants],
   );
 
+  const selectedVariant =
+    variants.find((variant) => variant.id === selectedVariantId) ??
+    variants[0] ??
+    null;
+
   const hasVariantPhotos = item.variants.some(
     (variant) => variant.images.length > 0,
   );
+
+  const selectVariant = (variant: MenuVariant) => {
+    setSelectedVariantId(variant.id);
+    setQuantity(1);
+
+    const image = imagesInOrder(variant.images)[0];
+
+    if (image) {
+      setSelectedImageId(image.id);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (!selectedVariant) {
+      return;
+    }
+
+    const variantImage =
+      imagesInOrder(selectedVariant.images)[0]?.url ?? images[0]?.url ?? null;
+
+    addItem(
+      {
+        variantId: selectedVariant.id,
+        menuId: item.id,
+        menuName: item.name,
+        variantSize: selectedVariant.size,
+        unitPrice: selectedVariant.price,
+        imageUrl: variantImage,
+      },
+      quantity,
+    );
+
+    toast.success(`${item.name} added to your cart.`);
+    openCart();
+    setQuantity(1);
+  };
 
   return (
     <div className="space-y-6">
@@ -200,7 +252,7 @@ function DishDetails({ item }: { item: MenuItem }) {
                 </h2>
                 {hasVariantPhotos ? (
                   <span className="text-[11px] font-medium text-stone-400">
-                    Select a size to view its photo
+                    Photos change with the size you pick
                   </span>
                 ) : null}
               </div>
@@ -216,14 +268,76 @@ function DishDetails({ item }: { item: MenuItem }) {
                     <VariantRow
                       key={variant.id}
                       variant={variant}
-                      selectedImageId={selectedImage?.id ?? null}
-                      onSelectImage={setSelectedImageId}
+                      selected={selectedVariant?.id === variant.id}
+                      onSelect={() => selectVariant(variant)}
                     />
                   ))}
                 </ul>
               )}
             </Card>
           </motion.div>
+
+          {selectedVariant ? (
+            <motion.div
+              variants={staggerItem}
+              className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm"
+            >
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-400">
+                    Qty
+                  </span>
+                  <div className="flex items-center rounded-xl border border-stone-200">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setQuantity((current) => Math.max(1, current - 1))
+                      }
+                      disabled={quantity <= 1}
+                      aria-label="Decrease quantity"
+                      className="flex size-9 items-center justify-center text-stone-500 transition-colors hover:text-stone-900 disabled:opacity-40"
+                    >
+                      <Minus className="size-4" aria-hidden="true" />
+                    </button>
+                    <span
+                      aria-live="polite"
+                      className="w-9 text-center text-sm font-semibold text-stone-900"
+                    >
+                      {quantity}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setQuantity((current) =>
+                          Math.min(MAX_ITEM_QUANTITY, current + 1),
+                        )
+                      }
+                      disabled={quantity >= MAX_ITEM_QUANTITY}
+                      aria-label="Increase quantity"
+                      className="flex size-9 items-center justify-center text-stone-500 transition-colors hover:text-stone-900 disabled:opacity-40"
+                    >
+                      <Plus className="size-4" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={handleAddToCart}
+                  className="flex-1"
+                  leftIcon={
+                    <ShoppingBag className="size-4" aria-hidden="true" />
+                  }
+                >
+                  Add to cart ·{" "}
+                  {formatPrice(Number(selectedVariant.price) * quantity)}
+                </Button>
+              </div>
+              <p className="mt-2.5 text-xs leading-relaxed text-stone-400">
+                {selectedVariant.size ?? "Standard"} selected. Prices and
+                availability are confirmed when the order is placed.
+              </p>
+            </motion.div>
+          ) : null}
 
           <motion.div variants={staggerItem} className="flex flex-wrap gap-2">
             <LinkButton
@@ -325,56 +439,54 @@ function Gallery({
 
 function VariantRow({
   variant,
-  selectedImageId,
-  onSelectImage,
+  selected,
+  onSelect,
 }: {
   variant: MenuVariant;
-  selectedImageId: string | null;
-  onSelectImage: (imageId: string) => void;
+  selected: boolean;
+  onSelect: () => void;
 }) {
   const photos = imagesInOrder(variant.images);
-  const image = photos[0] ?? null;
   const label = variant.size ?? "Standard";
-
-  const content = (
-    <>
-      <span className="flex min-w-0 items-center gap-2">
-        <span className="truncate text-sm font-medium text-stone-800">
-          {label}
-        </span>
-        {photos.length > 0 ? (
-          <span className="inline-flex shrink-0 items-center gap-1 text-[11px] font-medium text-stone-400">
-            <Camera className="size-3" aria-hidden="true" />
-            {photos.length}
-          </span>
-        ) : null}
-      </span>
-      <span className="shrink-0 text-sm font-semibold text-stone-900">
-        {formatPrice(variant.price)}
-      </span>
-    </>
-  );
-
-  if (!image) {
-    return (
-      <li className="flex items-center justify-between gap-3 px-5 py-3.5">
-        {content}
-      </li>
-    );
-  }
 
   return (
     <li>
       <button
         type="button"
-        onClick={() => onSelectImage(image.id)}
-        aria-pressed={selectedImageId === image.id}
+        onClick={onSelect}
+        aria-pressed={selected}
         className={cn(
           "flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:bg-stone-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-600",
-          selectedImageId === image.id && "bg-brand-50/60",
+          selected && "bg-brand-50/60",
         )}
       >
-        {content}
+        <span className="flex min-w-0 items-center gap-2.5">
+          <span
+            className={cn(
+              "flex size-4 shrink-0 items-center justify-center rounded-full border transition-colors",
+              selected
+                ? "border-brand-600 bg-brand-600"
+                : "border-stone-300 bg-white",
+            )}
+            aria-hidden="true"
+          >
+            {selected ? (
+              <span className="size-1.5 rounded-full bg-white" />
+            ) : null}
+          </span>
+          <span className="truncate text-sm font-medium text-stone-800">
+            {label}
+          </span>
+          {photos.length > 0 ? (
+            <span className="inline-flex shrink-0 items-center gap-1 text-[11px] font-medium text-stone-400">
+              <Camera className="size-3" aria-hidden="true" />
+              {photos.length}
+            </span>
+          ) : null}
+        </span>
+        <span className="shrink-0 text-sm font-semibold text-stone-900">
+          {formatPrice(variant.price)}
+        </span>
       </button>
     </li>
   );

@@ -1,8 +1,9 @@
 import { Link, Outlet } from "react-router-dom";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, ReceiptText } from "lucide-react";
 
 import { useMe } from "@/features/auth/hooks";
 import { useAuthStore } from "@/features/auth/store";
+import { CartButton, CartDrawer } from "@/features/cart/CartDrawer";
 
 import { Avatar, LinkButton, Logo } from "./ui";
 
@@ -49,12 +50,26 @@ export function PublicLayout() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <CartButton />
             {user ? (
               <>
+                <span className="hidden sm:inline-flex">
+                  <LinkButton
+                    to="/orders"
+                    variant="secondary"
+                    size="sm"
+                    leftIcon={
+                      <ReceiptText className="size-4" aria-hidden="true" />
+                    }
+                  >
+                    Orders
+                  </LinkButton>
+                </span>
                 <LinkButton
                   to="/dashboard"
                   variant="secondary"
                   size="sm"
+                  className="hidden sm:inline-flex"
                   leftIcon={
                     <LayoutDashboard className="size-4" aria-hidden="true" />
                   }
@@ -95,6 +110,8 @@ export function PublicLayout() {
           <p>Freshly made, beautifully catered.</p>
         </div>
       </footer>
+
+      <CartDrawer />
     </div>
   );
 }

@@ -54,9 +54,15 @@ export function RequireRole({
 
 export function PublicOnlyRoute({ children }: { children: ReactNode }) {
   const status = useAuthStore((state) => state.status);
+  const location = useLocation();
 
   if (status === "authenticated") {
-    return <Navigate to="/dashboard" replace />;
+    // Once a login succeeds this guard re-renders before the mutation's own
+    // navigate() lands, so honour the original guarded destination instead of
+    // always dropping the user on the dashboard.
+    const state = location.state as { from?: string } | null;
+
+    return <Navigate to={state?.from ?? "/dashboard"} replace />;
   }
 
   return <>{children}</>;

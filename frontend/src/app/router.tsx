@@ -17,6 +17,10 @@ import { ForbiddenPage } from "@/features/errors/ForbiddenPage";
 import { NotFoundPage } from "@/features/errors/NotFoundPage";
 import { MenuPage } from "@/features/menu/MenuPage";
 import { MenuItemPage } from "@/features/menu/MenuItemPage";
+import { CheckoutPage } from "@/features/orders/CheckoutPage";
+import { OrderDetailPage } from "@/features/orders/OrderDetailPage";
+import { OrdersPage } from "@/features/orders/OrdersPage";
+import { PaymentConfirmationPage } from "@/features/orders/PaymentConfirmationPage";
 import { UsersPage } from "@/features/users/UsersPage";
 
 export const router = createBrowserRouter([
@@ -60,6 +64,13 @@ export const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <DashboardPage /> },
       { path: "profile", element: <ProfilePage /> },
+      { path: "checkout", element: <CheckoutPage /> },
+      { path: "orders", element: <OrdersPage /> },
+      {
+        path: "orders/confirmation",
+        element: <PaymentConfirmationPage />,
+      },
+      { path: "orders/:id", element: <OrderDetailPage /> },
       {
         path: "admin/menu",
         element: (
