@@ -15,7 +15,7 @@ export function PublicLayout() {
   useMe();
 
   return (
-    <div className="flex min-h-screen flex-col bg-stone-50">
+    <div className="flex min-h-screen flex-col overflow-x-clip bg-stone-50">
       <header className="sticky top-0 z-30 border-b border-stone-200 bg-stone-50/85 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
           <Link
@@ -107,7 +107,6 @@ export function PublicLayout() {
       <footer className="border-t border-stone-200 bg-white">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-6 text-sm text-stone-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>© {new Date().getFullYear()} Mimmies Plus Catering</p>
-          <p>Freshly made, beautifully catered.</p>
         </div>
       </footer>
 

@@ -1,15 +1,12 @@
 import { useDeferredValue, useMemo, useState } from "react";
-import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowDown,
   ArrowRight,
   ChefHat,
   RefreshCw,
   Search,
-  Sparkles,
-  UtensilsCrossed,
   X,
 } from "lucide-react";
 
@@ -28,19 +25,6 @@ import type { MenuImage, MenuItem } from "./types";
 
 const ALL_CATEGORIES = "all";
 
-const CATEGORY_TONES = [
-  "bg-brand-50 text-brand-700",
-  "bg-emerald-50 text-emerald-700",
-  "bg-sky-50 text-sky-700",
-  "bg-amber-50 text-amber-700",
-  "bg-rose-50 text-rose-700",
-  "bg-violet-50 text-violet-700",
-];
-
-function dishLabel(count: number): string {
-  return `${count} ${count === 1 ? "dish" : "dishes"}`;
-}
-
 function primaryImage(item: MenuItem): MenuImage | null {
   const images = [
     ...item.images,
@@ -57,9 +41,17 @@ function scrollToMenu(): void {
   });
 }
 
+function scrollToCategories(): void {
+  document.getElementById("categories")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
 export function MenuPage() {
   const categoriesQuery = useCategories();
   const menuQuery = useMenuItems();
+  const reduceMotion = useReducedMotion();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(ALL_CATEGORIES);
   const deferredSearch = useDeferredValue(search);
@@ -78,10 +70,17 @@ export function MenuPage() {
   }, [items]);
 
   const filteredItems = useMemo(() => {
-    const tokens = deferredSearch.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const tokens = deferredSearch
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
 
     return items.filter((item) => {
-      if (activeCategory !== ALL_CATEGORIES && item.categoryId !== activeCategory) {
+      if (
+        activeCategory !== ALL_CATEGORIES &&
+        item.categoryId !== activeCategory
+      ) {
         return false;
       }
 
@@ -105,9 +104,11 @@ export function MenuPage() {
   const activeCategoryName =
     activeCategory === ALL_CATEGORIES
       ? null
-      : (categories.find((category) => category.id === activeCategory)?.name ?? null);
+      : (categories.find((category) => category.id === activeCategory)?.name ??
+        null);
 
-  const hasFilters = search.trim().length > 0 || activeCategory !== ALL_CATEGORIES;
+  const hasFilters =
+    search.trim().length > 0 || activeCategory !== ALL_CATEGORIES;
   const menuError = menuQuery.error;
   const categoriesError = categoriesQuery.error;
 
@@ -123,115 +124,107 @@ export function MenuPage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-3xl bg-stone-950 px-6 py-8 text-white shadow-sm sm:px-9 sm:py-10">
-        <motion.div
+      <section className="relative left-1/2 isolate -mt-6 w-screen -translate-x-1/2 overflow-hidden bg-[#0b0a09] text-white lg:-mt-8">
+        <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-brand-600/30 blur-3xl"
-          animate={{ x: [0, -16, 0], y: [0, 18, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(234,88,12,0.22),transparent_55%)]"
         />
-        <motion.div
+        <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-28 left-1/4 size-64 rounded-full bg-amber-500/15 blur-3xl"
-          animate={{ x: [0, 14, 0], y: [0, -14, 0] }}
-          transition={{
-            duration: 24,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0b0a09] to-transparent"
         />
 
-        <motion.div
-          className="relative space-y-6"
-          variants={staggerContainer}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.div variants={staggerItem} className="space-y-3">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-200 ring-1 ring-inset ring-white/15">
-              <Sparkles className="size-3.5" aria-hidden="true" />
-              Mimmies Plus Catering
-            </span>
-            <h1 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-              Good food, made for every occasion.
-            </h1>
-            <p className="max-w-xl text-sm leading-relaxed text-white/[0.62] sm:text-base">
-              Explore our kitchen, find a favourite, and let us cater the
-              moments that matter.
-            </p>
-          </motion.div>
-
-          <motion.div variants={staggerItem} className="max-w-xl">
-            <label htmlFor="menu-search" className="sr-only">
-              Search the menu
-            </label>
-            <div className="relative">
-              <Search
-                className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-white/50"
+        <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center px-6 pb-16 pt-14 text-center sm:pt-20 lg:pb-24 lg:pt-24">
+          <motion.div
+            className="flex flex-col items-center"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.p
+              variants={staggerItem}
+              className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-white/50 sm:text-[11px]"
+            >
+              <span
                 aria-hidden="true"
+                className="h-px w-8 bg-white/20 sm:w-12"
               />
-              <input
-                id="menu-search"
-                type="text"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    scrollToMenu();
-                  }
-                }}
-                placeholder="Search dishes, sizes, or categories…"
-                enterKeyHint="search"
-                className="h-12 w-full rounded-2xl border border-white/15 bg-white/10 pl-11 pr-12 text-sm text-white outline-none backdrop-blur transition placeholder:text-white/45 focus:border-brand-400/60 focus:bg-white/15 focus:ring-4 focus:ring-brand-500/20"
+              Mimmies Plus Catering
+              <span
+                aria-hidden="true"
+                className="h-px w-8 bg-white/20 sm:w-12"
               />
-              {search ? (
-                <button
-                  type="button"
-                  onClick={() => setSearch("")}
-                  aria-label="Clear search"
-                  className="absolute inset-y-0 right-2 my-auto flex size-8 items-center justify-center rounded-lg text-white/60 transition hover:bg-white/10 hover:text-white"
-                >
-                  <X className="size-4" aria-hidden="true" />
-                </button>
-              ) : null}
-            </div>
+            </motion.p>
+
+            <motion.h1
+              variants={staggerItem}
+              className="mt-6 max-w-3xl font-serif text-4xl font-medium leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl"
+            >
+              Mimmies Plus Catering
+            </motion.h1>
+
+            <motion.p
+              variants={staggerItem}
+              className="mt-5 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base"
+            >
+              Specialized catering and logistics services for onshore and
+              offshore.
+            </motion.p>
+
+            <motion.div
+              variants={staggerItem}
+              className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-4"
+            >
+              <button
+                type="button"
+                onClick={scrollToMenu}
+                className="group inline-flex h-12 items-center gap-3 border border-white/25 px-7 text-[11px] font-semibold uppercase tracking-[0.28em] text-white transition-colors hover:border-white hover:bg-white hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                Browse the menu
+                <ArrowDown
+                  className="size-3.5 transition-transform group-hover:translate-y-0.5"
+                  aria-hidden="true"
+                />
+              </button>
+              <button
+                type="button"
+                onClick={scrollToCategories}
+                className="inline-flex h-12 items-center px-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                Explore categories
+              </button>
+            </motion.div>
           </motion.div>
 
           <motion.div
-            variants={staggerItem}
-            className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-5"
+            initial={{ opacity: 0, scale: 0.94, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.2 }}
+            className="relative mt-12 w-full max-w-[22rem] sm:max-w-[26rem] lg:mt-14 lg:max-w-[30rem]"
           >
-            <div className="flex flex-wrap items-center gap-6">
-              <div>
-                <p className="text-xl font-semibold text-white">
-                  {menuQuery.isPending ? "…" : items.length}
-                </p>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40">
-                  On the menu
-                </p>
-              </div>
-              <div>
-                <p className="text-xl font-semibold text-white">
-                  {categoriesQuery.isPending ? "…" : categories.length}
-                </p>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40">
-                  Categories
-                </p>
-              </div>
+            <div
+              aria-hidden="true"
+              className="absolute inset-4 rounded-full bg-brand-600/25 blur-3xl"
+            />
+            <div className="relative aspect-square w-full overflow-hidden rounded-full ring-1 ring-white/10">
+              <motion.img
+                src="/images/hero-premium.jpg"
+                alt="Jollof rice with grilled chicken and plantain plated in the Mimmies Plus kitchen"
+                className="size-full object-cover"
+                animate={reduceMotion ? undefined : { rotate: 360 }}
+                transition={
+                  reduceMotion
+                    ? undefined
+                    : { duration: 30, repeat: Infinity, ease: "linear" }
+                }
+              />
             </div>
-            <Button
-              size="sm"
-              onClick={scrollToMenu}
-              rightIcon={<ArrowDown className="size-4" aria-hidden="true" />}
-            >
-              Browse the menu
-            </Button>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       <section
+        id="categories"
         aria-labelledby="categories-heading"
         className="scroll-mt-24 space-y-4"
       >
@@ -239,12 +232,6 @@ export function MenuPage() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">
             Categories
           </p>
-          <h2
-            id="categories-heading"
-            className="text-xl font-semibold tracking-tight text-stone-900"
-          >
-            What are you craving?
-          </h2>
         </div>
 
         {categoriesError ? (
@@ -264,7 +251,7 @@ export function MenuPage() {
         ) : null}
 
         <motion.div
-          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          className="-mx-4 flex snap-x gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:px-6"
           variants={staggerContainer}
           initial="hidden"
           animate="show"
@@ -273,11 +260,9 @@ export function MenuPage() {
             label="All dishes"
             count={menuQuery.isPending ? null : items.length}
             active={activeCategory === ALL_CATEGORIES}
-            tone="bg-stone-900 text-white"
-            icon={<UtensilsCrossed className="size-5" aria-hidden="true" />}
             onClick={() => selectCategory(ALL_CATEGORIES)}
           />
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <CategoryCard
               key={category.id}
               label={category.name}
@@ -287,8 +272,6 @@ export function MenuPage() {
                   : (categoryCounts.get(category.id) ?? 0)
               }
               active={activeCategory === category.id}
-              tone={CATEGORY_TONES[index % CATEGORY_TONES.length]}
-              icon={<ChefHat className="size-5" aria-hidden="true" />}
               onClick={() => selectCategory(category.id)}
             />
           ))}
@@ -313,24 +296,47 @@ export function MenuPage() {
                 ? `Results for “${search.trim()}”`
                 : (activeCategoryName ?? "Every dish, freshly made")}
             </h2>
-            <p aria-live="polite" className="text-sm text-stone-500">
-              {menuQuery.isPending
-                ? "Loading dishes…"
-                : hasFilters
-                  ? `${dishLabel(filteredItems.length)} of ${dishLabel(items.length)}`
-                  : dishLabel(items.length)}
-            </p>
           </div>
-          {hasFilters ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearFilters}
-              leftIcon={<X className="size-4" aria-hidden="true" />}
-            >
-              Clear filters
-            </Button>
-          ) : null}
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+            <div className="relative sm:w-64">
+              <label htmlFor="menu-search" className="sr-only">
+                Search the menu
+              </label>
+              <Search
+                className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-stone-400"
+                aria-hidden="true"
+              />
+              <input
+                id="menu-search"
+                type="text"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search dishes, sizes…"
+                enterKeyHint="search"
+                className="h-11 w-full rounded-xl border border-stone-200 bg-white pl-10 pr-10 text-sm text-stone-900 shadow-sm outline-none transition placeholder:text-stone-400 focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+              />
+              {search ? (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  aria-label="Clear search"
+                  className="absolute inset-y-0 right-2 my-auto flex size-8 items-center justify-center rounded-lg text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
+                >
+                  <X className="size-4" aria-hidden="true" />
+                </button>
+              ) : null}
+            </div>
+            {hasFilters ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                leftIcon={<X className="size-4" aria-hidden="true" />}
+              >
+                Clear filters
+              </Button>
+            ) : null}
+          </div>
         </div>
 
         {menuError ? (
@@ -353,7 +359,10 @@ export function MenuPage() {
         {menuQuery.isPending ? (
           <MenuSkeleton />
         ) : menuQuery.isError ? null : filteredItems.length > 0 ? (
-          <motion.div layout className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <motion.div
+            layout
+            className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+          >
             {filteredItems.map((item) => (
               <MenuCard key={item.id} item={item} />
             ))}
@@ -389,55 +398,50 @@ function CategoryCard({
   label,
   count,
   active,
-  tone,
-  icon,
   onClick,
 }: {
   label: string;
   count: number | null;
   active: boolean;
-  tone: string;
-  icon: ReactNode;
   onClick: () => void;
 }) {
   return (
     <motion.button
       type="button"
       variants={staggerItem}
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -1 }}
       whileTap={{ scale: 0.98 }}
       transition={springSnappy}
       onClick={onClick}
       aria-pressed={active}
       className={
         active
-          ? "flex items-center gap-3 rounded-2xl border border-brand-200 bg-brand-50 p-4 text-left shadow-sm ring-2 ring-brand-200"
-          : "flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4 text-left shadow-sm transition-colors hover:border-stone-300"
+          ? "inline-flex shrink-0 snap-start items-center gap-2 whitespace-nowrap rounded-xl border border-brand-200 bg-brand-50 px-3.5 py-2.5 shadow-sm ring-1 ring-brand-200"
+          : "inline-flex shrink-0 snap-start items-center gap-2 whitespace-nowrap rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 shadow-sm transition-colors hover:border-stone-300"
       }
     >
       <span
-        className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${tone}`}
+        className={
+          active
+            ? "text-sm font-semibold text-brand-900"
+            : "text-sm font-semibold text-stone-800"
+        }
       >
-        {icon}
+        {label}
       </span>
-      <span className="min-w-0 flex-1">
-        <span
-          className={
-            active
-              ? "block truncate text-sm font-semibold text-brand-900"
-              : "block truncate text-sm font-semibold text-stone-900"
-          }
-        >
-          {label}
-        </span>
-        <span className="block text-xs text-stone-500">
-          {count === null ? "Loading…" : dishLabel(count)}
-        </span>
+      <span
+        className={
+          active
+            ? "rounded-md bg-brand-100 px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-brand-700"
+            : "rounded-md bg-stone-100 px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-stone-500"
+        }
+      >
+        {count === null ? "…" : count}
       </span>
       {active ? (
         <motion.span
           layoutId="category-active-dot"
-          className="size-2 shrink-0 rounded-full bg-brand-600"
+          className="size-1.5 shrink-0 rounded-full bg-brand-600"
           transition={springSnappy}
         />
       ) : null}
@@ -565,7 +569,10 @@ function MenuSkeleton() {
       <p className="sr-only" role="status">
         Loading the menu…
       </p>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-hidden="true">
+      <div
+        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+        aria-hidden="true"
+      >
         {Array.from({ length: 6 }, (_, index) => (
           <div
             key={index}
