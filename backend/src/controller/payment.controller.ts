@@ -1,7 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 
 import { orderService } from "../service/order.service";
+import { paymentService } from "../service/payment.service";
 import { verifyPaymentSchema } from "../dto/order.dto";
+import { listPaymentsQuerySchema } from "../dto/payment.dto";
 import { parseWith } from "../common/utils/validation";
 import {
   BadRequestError,
@@ -18,6 +20,42 @@ function requireUser(req: Request): AuthUser {
 }
 
 export class PaymentController {
+  findAll = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const query = parseWith(listPaymentsQuerySchema, req.query);
+      const result = await paymentService.findAll(query);
+
+      res.status(200).json({
+        success: true,
+        data: result.items,
+        pagination: result.pagination,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  summary = async (
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const summary = await paymentService.summary();
+
+      res.status(200).json({
+        success: true,
+        data: summary,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   verify = async (
     req: Request,
     res: Response,

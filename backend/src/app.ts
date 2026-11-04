@@ -10,6 +10,8 @@ import userRoute from "./routes/user.route";
 import orderRoute from "./routes/order.route";
 import paymentRoute from "./routes/payment.route";
 import paystackWebhookRoute from "./routes/payment-webhook.route";
+import analyticsRoute from "./routes/analytics.route";
+import contactRoute from "./routes/contact.route";
 import { errorHandler, notFoundHandler } from "./middleware/error.middleware";
 import { UPLOAD_ROOT } from "./config/storage.config";
 import { env } from "./config/env";
@@ -54,6 +56,8 @@ app.use("/api/v1/payments", paymentRoute);
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/menu", menuRoute);
 app.use("/api/v1/images", imageRoutes);
+app.use("/api/v1/analytics", analyticsRoute);
+app.use("/api/v1/contacts", contactRoute);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

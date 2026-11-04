@@ -55,3 +55,10 @@ export const sensitiveAuthRateLimiter: RequestHandler = createRateLimiter({
   limit: env.PASSWORD_RESET_RATE_LIMIT_MAX,
   message: TOO_MANY_ATTEMPTS_MESSAGE,
 });
+
+export const contactRateLimiter: RequestHandler = createRateLimiter({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  message:
+    "You have sent several messages already. Please wait a little before trying again.",
+});
