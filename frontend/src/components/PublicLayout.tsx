@@ -47,6 +47,12 @@ export function PublicLayout() {
             >
               Menu
             </a>
+            <Link
+              to="/contact"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-stone-100 hover:text-stone-900"
+            >
+              Contact
+            </Link>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -105,8 +111,14 @@ export function PublicLayout() {
       </main>
 
       <footer className="border-t border-stone-200 bg-white">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-6 text-sm text-stone-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-6 text-sm text-stone-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>© {new Date().getFullYear()} Mimmies Plus Catering</p>
+          <Link
+            to="/contact"
+            className="font-medium text-stone-600 transition-colors hover:text-stone-900"
+          >
+            Contact us
+          </Link>
         </div>
       </footer>
 

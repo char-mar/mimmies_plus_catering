@@ -33,4 +33,37 @@ export const paymentKeys = {
   all: ["payments"] as const,
   verify: (reference: string) =>
     [...paymentKeys.all, "verify", reference] as const,
+  lists: () => [...paymentKeys.all, "list"] as const,
+  list: (filters: {
+    page: number;
+    limit: number;
+    status?: string;
+    search?: string;
+  }) => [...paymentKeys.lists(), filters] as const,
+  summary: () => [...paymentKeys.all, "summary"] as const,
+};
+
+export const adminOrderKeys = {
+  all: ["admin", "orders"] as const,
+  lists: () => [...adminOrderKeys.all, "list"] as const,
+  list: (filters: {
+    page: number;
+    limit: number;
+    status?: string;
+    paymentStatus?: string;
+    fulfillmentType?: string;
+  }) => [...adminOrderKeys.lists(), filters] as const,
+};
+
+export const analyticsKeys = {
+  all: ["analytics"] as const,
+  overview: (days: number) =>
+    [...analyticsKeys.all, "overview", days] as const,
+};
+
+export const contactKeys = {
+  all: ["contacts"] as const,
+  lists: () => [...contactKeys.all, "list"] as const,
+  list: (filters: { page: number; limit: number; status?: string }) =>
+    [...contactKeys.lists(), filters] as const,
 };

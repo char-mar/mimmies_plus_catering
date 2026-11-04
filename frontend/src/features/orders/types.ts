@@ -23,12 +23,15 @@ export const fulfillmentTypes = ["PICKUP", "DELIVERY"] as const;
 
 export type FulfillmentType = (typeof fulfillmentTypes)[number];
 
-export type PaymentRecordStatus =
-  | "PENDING"
-  | "SUCCESS"
-  | "FAILED"
-  | "ABANDONED"
-  | "REFUNDED";
+export const paymentRecordStatuses = [
+  "PENDING",
+  "SUCCESS",
+  "FAILED",
+  "ABANDONED",
+  "REFUNDED",
+] as const;
+
+export type PaymentRecordStatus = (typeof paymentRecordStatuses)[number];
 
 export interface OrderItem {
   id: string;

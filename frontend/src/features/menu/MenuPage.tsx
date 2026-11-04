@@ -361,7 +361,7 @@ export function MenuPage() {
         ) : menuQuery.isError ? null : filteredItems.length > 0 ? (
           <motion.div
             layout
-            className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+            className="grid gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
           >
             {filteredItems.map((item) => (
               <MenuCard key={item.id} item={item} />

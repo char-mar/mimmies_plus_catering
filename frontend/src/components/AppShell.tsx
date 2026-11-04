@@ -3,11 +3,15 @@ import type { ComponentType, SVGProps } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
+  BarChart3,
   ChefHat,
+  ClipboardList,
+  CreditCard,
   LayoutDashboard,
   LogOut,
   Mail,
   Menu,
+  MessageSquare,
   ReceiptText,
   ShieldCheck,
   Tags,
@@ -62,6 +66,10 @@ function buildNavigation(role: "SUPER_ADMIN" | "ADMIN" | "CUSTOMER"): NavSection
     sections.push({
       label: "Administration",
       items: [
+        { label: "Analytics", to: "/admin/analytics", icon: BarChart3 },
+        { label: "Order management", to: "/admin/orders", icon: ClipboardList },
+        { label: "Payments", to: "/admin/payments", icon: CreditCard },
+        { label: "Contacts", to: "/admin/contacts", icon: MessageSquare },
         { label: "Menu", to: "/admin/menu", icon: ChefHat },
         { label: "Categories", to: "/admin/categories", icon: Tags },
         { label: "Users", to: "/admin/users", icon: Users },

@@ -62,6 +62,26 @@ export const FULFILLMENT_LABELS: Record<FulfillmentType, string> = {
   DELIVERY: "Delivery",
 };
 
+// Mirrors the backend state machine so admins only see valid next steps.
+const ORDER_TRANSITIONS: Record<OrderStatus, readonly OrderStatus[]> = {
+  PENDING: ["CONFIRMED", "CANCELLED"],
+  CONFIRMED: ["PREPARING", "CANCELLED"],
+  PREPARING: ["READY", "CANCELLED"],
+  READY: ["OUT_FOR_DELIVERY", "COMPLETED", "CANCELLED"],
+  OUT_FOR_DELIVERY: ["COMPLETED", "CANCELLED"],
+  COMPLETED: [],
+  CANCELLED: [],
+};
+
+export function nextOrderStatuses(
+  from: OrderStatus,
+  fulfillmentType: FulfillmentType,
+): readonly OrderStatus[] {
+  return ORDER_TRANSITIONS[from].filter(
+    (status) => status !== "OUT_FOR_DELIVERY" || fulfillmentType === "DELIVERY",
+  );
+}
+
 export function isOrderPayable(order: {
   status: OrderStatus;
   paymentStatus: PaymentStatus;
